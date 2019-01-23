@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="a" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Encoding>UTF-8</Encoding>
+        <File>logs/a.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="b" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/b.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="c"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/c.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+        </encoder>
+        <!-- 记录所有的info级别及以上的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+    <appender name="d"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/d.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level><!-- 只接收INFO级别的日志 -->
+            <onMatch>ACCEPT</onMatch> <!-- onMatch表示匹配如何处理，可以根据需求设置接受或拒绝 -->
+            <onMismatch>DENY</onMismatch><!-- onMismatch表示不匹配如何处理，具体自行可以设置。 -->
+        </filter>
+    </appender>
+    <!-- additivity="false" 不加这个日志会再次写到root中去 -->
+    <!-- com.zero.logback.a包下的debug级别的日志全部记录到这个日志文件 -->
+    <logger name="com.zero.logback.a" level="WARN" additivity="false">
+        <appender-ref ref="a" />
+    </logger>
+    <!-- b_log日志 -->
+    <logger name="b_log" level="DEBUG" additivity="false">
+        <appender-ref ref="b" />
+    </logger>
+    <root>
+        <appender-ref ref="c" />
+        <appender-ref ref="d" />
+    </root>
+
+</configuration>
