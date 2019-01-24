@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration>
+<configuration>
+    <!--文件日志输出根目录，默认为当前目录下output.log文件夹，可通过环境变量LOG_PATH配置-->
+    <property name="log_path" value="${LOG_PATH:-logs}"/>
+    <!--历史文件保存数量上限，单位（天），表示历史文件保留天数，超过设定天数的文件将被删除-->
+    <property name="max_history" value="30"/>
+    <!--单个文件大小限制-->
+    <property name="max_file_size" value="500MB"/>
+    <!--文件总大小限制，该大小针对单个appender-->
+    <property name="total_size_cap" value="50GB"/>
+
+    <!--日志输出样式-->
+    <property name="log_pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss} [%level][%thread{20}][%logger{36}:%line]: %msg%n"/>
+
+    <!--日志控制台输出，输出所有日志-->
+    <appender name="CONSOLE_OUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--日志文件输出，输出所有日志-->
+    <appender name="PLATFORM_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_path}/platform.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${log_path}/platform-%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+            <maxFileSize>${max_file_size}</maxFileSize>
+            <maxHistory>${max_history}</maxHistory>
+            <totalSizeCap>${total_size_cap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--错误日志文件输出，输出所有错误日志-->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_path}/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${log_path}/error-%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+            <maxFileSize>${max_file_size}</maxFileSize>
+            <maxHistory>${max_history}</maxHistory>
+            <totalSizeCap>${total_size_cap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE_OUT"/>
+        <appender-ref ref="PLATFORM_FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+</configuration>
