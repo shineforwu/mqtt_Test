@@ -12,6 +12,7 @@
       <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.3" />
       <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.3" />
       <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
+      <element id="library" level="project" name="Maven: org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0" />
     </root>
   </artifact>
 </component>
