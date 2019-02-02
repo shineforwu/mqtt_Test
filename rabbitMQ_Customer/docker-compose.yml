@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+    java_T1:
+        image: java:8-jdk
+        volumes: 
+        - /NoUsed/1:/Java
+        command:  [ "/bin/bash", "cd" , "/Java" 
+        ]
+        command:  [ "nohup" ,"java", "-jar" , "/Java/rabbitMQ_Customer.jar" ," >output 2>&1 &"
+        ]
